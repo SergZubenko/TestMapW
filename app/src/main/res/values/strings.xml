@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">TestMapW</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="hello_fragment">Welcome to the FindMe application!</string>
+
+
+    <string name="status_locinprogress">getting coordinated.....</string>
+
+    <string name="status_locdone">Located</string>
+</resources>
