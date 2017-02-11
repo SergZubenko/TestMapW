@@ -43,14 +43,6 @@ import static android.content.Context.LOCATION_SERVICE;
  * create an instance of this fragment.
  */
 public class FragmentMap extends Fragment implements OnMapReadyCallback{
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public GoogleMap mMap;
     public float curZoom = 10;
@@ -80,8 +72,8 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
     public static FragmentMap newInstance(String param1, String param2) {
         FragmentMap fragment = new FragmentMap();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -179,11 +171,12 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
-                currLoc = new LatLng(location.getLatitude(), location.getLongitude());
-                addMarker(currLoc, curZoom);
-                teLocateStatus.setText(getString(R.string.status_locdone));
-                Log.i("Fragment map","updated coordinates:   "+currLoc.toString());
-
+                LatLng newLoc = new LatLng(location.getLatitude(), location.getLongitude());
+                if (!currLoc.equals(newLoc)) {
+                    addMarker(currLoc, curZoom);
+                    teLocateStatus.setText(getString(R.string.status_locdone));
+                    Log.i("Fragment map", "updated coordinates:   " + currLoc.toString());
+                }
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -203,7 +196,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
         }
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
     }
 
     /////////--MAPS and NAVIGATION/////////
