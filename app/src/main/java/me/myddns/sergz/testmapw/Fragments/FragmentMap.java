@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
+import me.myddns.sergz.testmapw.DataStore;
 import me.myddns.sergz.testmapw.MainActivity;
 import me.myddns.sergz.testmapw.R;
 
@@ -47,11 +48,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
     public GoogleMap mMap;
     public float curZoom = 10;
     public LatLng currLoc;
-
+    public DataStore dataStore;
 
     ////
     private boolean isLocated  = false;
-    Button btnLocateMe;
+    Button btnLocateMe, btnZoomIn, btnZoomOut;
     TextView teLocateStatus;
 
     private OnFragmentInteractionListener mListener;
@@ -85,12 +86,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
 //        }
-
-
-
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,6 +100,35 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
             @Override
             public void onClick(View v) {
                 locateMe();
+            }
+        });
+
+
+        btnZoomIn = (Button)view.findViewById(R.id.btnZoomIn);
+        btnZoomIn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if (mMap.getMaxZoomLevel() >= +1) {
+                    curZoom++;
+                    addMarker(currLoc, curZoom);
+                    if (curZoom >= 15) {
+                        mMap.setBuildingsEnabled(true);
+                    }
+                }
+            }
+        });
+
+        btnZoomIn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if (mMap.getMinZoomLevel() <=curZoom - 1){
+                    curZoom--;
+                    addMarker(currLoc, curZoom);
+                    if (curZoom < 15)
+                    {
+                        mMap.setBuildingsEnabled(false);
+                    }
+                }
             }
         });
 

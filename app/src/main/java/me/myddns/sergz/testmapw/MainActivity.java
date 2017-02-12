@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,8 +25,7 @@ public class MainActivity extends AppCompatActivity
         implements  NavigationView.OnNavigationItemSelectedListener {
     FragmentMap fMap;
     FragmentWelcome fWelcome;
-
-
+    DataStore.CoordinatesLog dataStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         fMap = new FragmentMap();
         fWelcome = new FragmentWelcome();
+        setFrame(fWelcome);
    }
 
     @Override
@@ -87,64 +88,40 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private void setFrame(Fragment fTargetLayout){
+        FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
+        fTrans.replace(R.id.content_main, fTargetLayout);
+        fTrans.commit();
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
-        FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            fTrans.replace(R.id.content_main, fMap);
+        if (id == R.id.nav_map) {
+            setFrame(fMap);
 
-        } else if (id == R.id.nav_gallery) {
-            fTrans.replace(R.id.content_main, fWelcome);
+        } else if (id == R.id.nav_main_page) {
+            setFrame(fWelcome);
 
-        } else if (id == R.id.nav_slideshow) {
-            //   if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            //          return true;
-            //}
-            //  mMap.setMyLocationEnabled(!mMap.isMyLocationEnabled());
+        } else if (id == R.id.nav_log) {
+            //TODO: Add log frame and logging operation
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-            if (fMap.mMap.getMaxZoomLevel() >=fMap.curZoom + 1) {
-                fMap.curZoom++;
-                fMap.addMarker(fMap.currLoc, fMap.curZoom);
-                if (fMap.curZoom >= 15)
-                {
-                    fMap.mMap.setBuildingsEnabled(true);
-                }
-            }
-
-        } else if (id == R.id.nav_send) {
-            if (fMap.mMap.getMinZoomLevel() <=fMap.curZoom - 1){
-                fMap.curZoom--;
-                fMap.addMarker(fMap.currLoc, fMap.curZoom);
-                if (fMap.curZoom < 15)
-                {
-                    fMap.mMap.setBuildingsEnabled(false);
-                }
-            }
+        } else if (id == R.id.nav_settings) {
         }
-        fTrans.commit();
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
     }
 
 
 
-
+    public DataStore getDatastore(){
+        return dataStore!=null ? dataStore : new DataStore.CoordinatesLog(getApplicationContext());
+    }
 
 }
+
+

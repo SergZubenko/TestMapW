@@ -21,13 +21,34 @@
         android:id="@+id/btnLocateMe"
             android:layout_weight="1" />
 
+        <Button
+            android:text="Zoom In -"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnZoomIn"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="Zoom Out +"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnZoomOut"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/statusLayout">
+
         <TextView
             android:text="TextView"
-            android:layout_width="186dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/teLocateStatus"
             android:layout_weight="1" />
-
     </LinearLayout>
 
     <fragment
@@ -37,6 +58,8 @@
         android:layout_height="match_parent"
         tools:context="me.myddns.sergz.testmapw.MainActivity"
         android:tag="maptag" />
+
+
 
 
 </LinearLayout>
