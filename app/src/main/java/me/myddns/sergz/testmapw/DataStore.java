@@ -16,7 +16,7 @@ import java.util.Calendar;
 public class DataStore {
 
 public final class LatLongInfo {
-    public
+    //public
 }
 
 public class CoordinatesLog{
