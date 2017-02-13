@@ -1,5 +1,6 @@
 package me.myddns.sergz.testmapw;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,15 +8,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class DataStore {
 
+public final class LatLongInfo {
+    public
+}
 
-public final class CoordinatesLog{
-    public CoordinatesLog(Context context){
-        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(context);
-    };
-
-
+public class CoordinatesLog{
+    FeedReaderDbHelper  mDbHelper;
 
 
     public abstract class CoordinatesLogEntry implements BaseColumns {
@@ -64,11 +69,49 @@ public final class CoordinatesLog{
         public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             onUpgrade(db, oldVersion, newVersion);
         }
+
     }
+
+
+    //CONSTRUCTOR
+    public CoordinatesLog(Context context){
+        mDbHelper = new FeedReaderDbHelper(context);
+    };
+
+    public void addLog(LatLng newLoc){
+        // Gets the data repository in write mode
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        //Getting current time
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MMM/dd HH:mm:ss");
+        String timeStmp = sdf.format(c.getTime());
+        Log.i("calendar currtime",timeStmp);
+
+
+        //prepare stored data
+        ContentValues values = new ContentValues();
+        values.put(CoordinatesLogEntry.COLUMN_NAME_TIMESTAMP, timeStmp);
+        values.put(CoordinatesLogEntry.COLUMN_NAME_LONGTITUDE, newLoc.longitude);
+        values.put(CoordinatesLogEntry.COLUMN_NAME_LATITUDE, newLoc.latitude);
+        values.put(CoordinatesLogEntry.COLUMN_NAME_DESCRIPTION, newLoc.toString());
+
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.insert(
+                CoordinatesLogEntry.TABLE_NAME, null, values);
+        Log.i("ID inserted",String.valueOf(newRowId));
+    }
+
+
 
 }
 
+public CoordinatesLog coordinatesLog;
 
+    public DataStore(Context context){
+        coordinatesLog = new CoordinatesLog(context);
+    }
 
 
 

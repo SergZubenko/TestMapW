@@ -20,12 +20,14 @@ import android.view.MenuItem;
 import me.myddns.sergz.testmapw.Fragments.FragmentMap;
 import me.myddns.sergz.testmapw.Fragments.FragmentWelcome;
 
+import static me.myddns.sergz.testmapw.DataStore.*;
+
 
 public class MainActivity extends AppCompatActivity
         implements  NavigationView.OnNavigationItemSelectedListener {
     FragmentMap fMap;
     FragmentWelcome fWelcome;
-    DataStore.CoordinatesLog dataStore;
+    DataStore dataStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,9 +119,11 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     public DataStore getDatastore(){
-        return dataStore!=null ? dataStore : new DataStore.CoordinatesLog(getApplicationContext());
+        if (dataStore != null) return dataStore;
+        else {
+            return (new DataStore(getApplicationContext()));
+        }
     }
 
 }
